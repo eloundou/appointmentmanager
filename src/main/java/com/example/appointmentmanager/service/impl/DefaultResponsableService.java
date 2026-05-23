@@ -28,7 +28,8 @@ public class DefaultResponsableService implements ResponsableService {
     @Override
     public Responsable create(ResponsableAddRequest request) {
 
-        Responsable responsable = new Responsable();
+        var responsable = new Responsable();
+
         responsable.setRef(request.ref());
         responsable.setEmail(request.email());
         responsable.setTelephone(request.telephone());
@@ -42,7 +43,7 @@ public class DefaultResponsableService implements ResponsableService {
     @Override
     public Responsable update(Long id, ResponsableUpdateRequest request) {
 
-        Responsable responsable = findById(id);
+        var responsable = findById(id);
 
         responsable.setEmail(request.email());
         responsable.setTelephone(request.telephone());

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "appointments")
 @Getter
@@ -19,6 +21,9 @@ public class RendezVous {
 
     @Column(nullable = false)
     private String motif;
+
+    @Column(nullable = false)
+    private LocalDate dateRendezVous;
 
     @ManyToOne
     @JoinColumn(name = "plage_horaire_id")

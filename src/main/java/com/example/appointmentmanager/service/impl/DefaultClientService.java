@@ -22,7 +22,7 @@ public class DefaultClientService implements ClientService {
     @Override
     public Client create(ClientAddRequest request) {
 
-        Client client = new Client();
+        var client = new Client();
         client.setRef(request.ref());
         client.setEmail(request.email());
         client.setTelephone(request.telephone());
@@ -35,7 +35,7 @@ public class DefaultClientService implements ClientService {
     @Override
     public Client update(Long id, ClientUpdateRequest request) {
 
-        Client client = findById(id);
+        var client = findById(id);
 
         client.setEmail(request.email());
         client.setTelephone(request.telephone());

@@ -22,7 +22,7 @@ public class DefaultDepartementService implements DepartementService {
     @Override
     public Departement create(DepartementAddRequest request) {
 
-        Departement departement = new Departement();
+        var departement = new Departement();
         departement.setRef(request.ref());
         departement.setNom(request.nom());
 
@@ -32,7 +32,7 @@ public class DefaultDepartementService implements DepartementService {
     @Override
     public Departement update(Long id, DepartementUpdateRequest request) {
 
-        Departement departement = findById(id);
+        var departement = findById(id);
 
         departement.setNom(request.nom());
 
