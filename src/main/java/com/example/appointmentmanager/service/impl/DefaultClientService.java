@@ -48,7 +48,7 @@ public class DefaultClientService implements ClientService {
     @Override
     public Client findById(Long id) {
         return clientRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Impossible de trouver le client avec l'id " + id));
+                () -> new ResourceNotFoundException("Impossible de trouver le client avec l'identifiant " + id));
     }
 
     @Override

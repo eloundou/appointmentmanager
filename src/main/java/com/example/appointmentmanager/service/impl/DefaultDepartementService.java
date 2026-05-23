@@ -42,7 +42,7 @@ public class DefaultDepartementService implements DepartementService {
     @Override
     public Departement findById(Long id) {
         return departementRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Impossible de trouver le service avec l'id " + id));
+                () -> new ResourceNotFoundException("Impossible de trouver le service avec l'identifiant " + id));
     }
 
     @Override

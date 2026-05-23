@@ -55,7 +55,7 @@ public class DefaultResponsableService implements ResponsableService {
     @Override
     public Responsable findById(Long id) {
         return departementRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Impossible de trouver le responsable avec l'id " + id));
+                () -> new ResourceNotFoundException("Impossible de trouver le responsable avec l'identifiant " + id));
     }
 
     @Override
