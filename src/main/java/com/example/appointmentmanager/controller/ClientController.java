@@ -21,13 +21,13 @@ public class ClientController {
     }
 
     @PostMapping
-    ResponseEntity<Client> create(@RequestBody @Valid ClientAddRequest addAccountRequest) {
-        return ResponseEntity.ok().body(clientService.create(addAccountRequest));
+    ResponseEntity<Client> create(@RequestBody @Valid ClientAddRequest request) {
+        return ResponseEntity.ok().body(clientService.create(request));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Client> update(@PathVariable("id") Long id, @RequestBody @Valid ClientUpdateRequest updateRequest) {
-        return ResponseEntity.ok().body(clientService.update(id, updateRequest));
+    ResponseEntity<Client> update(@PathVariable("id") Long id, @RequestBody @Valid ClientUpdateRequest request) {
+        return ResponseEntity.ok().body(clientService.update(id, request));
     }
 
     @GetMapping("/{id}")

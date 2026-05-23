@@ -16,18 +16,19 @@ public class DepartmentController {
 
     private final DepartementService departementService;
 
-    public DepartmentController(DepartementService clientService) {
-        this.departementService = clientService;
+    public DepartmentController(DepartementService departementService) {
+        this.departementService = departementService;
     }
 
     @PostMapping
-    ResponseEntity<Departement> create(@RequestBody @Valid DepartementAddRequest addAccountRequest) {
-        return ResponseEntity.ok().body(departementService.create(addAccountRequest));
+    ResponseEntity<Departement> create(@RequestBody @Valid DepartementAddRequest request) {
+        return ResponseEntity.ok().body(departementService.create(request));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Departement> update(@PathVariable("id") Long id, @RequestBody @Valid DepartementUpdateRequest updateRequest) {
-        return ResponseEntity.ok().body(departementService.update(id, updateRequest));
+    ResponseEntity<Departement> update(@PathVariable("id") Long id,
+                                       @RequestBody @Valid DepartementUpdateRequest request) {
+        return ResponseEntity.ok().body(departementService.update(id, request));
     }
 
     @GetMapping("/{id}")
