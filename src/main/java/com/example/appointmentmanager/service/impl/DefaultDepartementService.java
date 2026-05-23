@@ -1,7 +1,5 @@
 package com.example.appointmentmanager.service.impl;
 
-import com.example.appointmentmanager.dto.DepartementAddRequest;
-import com.example.appointmentmanager.dto.DepartementUpdateRequest;
 import com.example.appointmentmanager.exceptions.ResourceNotFoundException;
 import com.example.appointmentmanager.model.Departement;
 import com.example.appointmentmanager.repository.DepartementRepository;
@@ -19,7 +17,7 @@ public class DefaultDepartementService implements DepartementService {
         this.departementRepository = departementRepository;
     }
 
-    @Override
+    /*@Override
     public Departement create(DepartementAddRequest request) {
 
         var departement = new Departement();
@@ -43,7 +41,7 @@ public class DefaultDepartementService implements DepartementService {
     public Departement findById(Long id) {
         return departementRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Impossible de trouver le service avec l'identifiant " + id));
-    }
+    }*/
 
     @Override
     public Departement findByReference(String reference) {

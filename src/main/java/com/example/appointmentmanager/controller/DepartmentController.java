@@ -1,12 +1,11 @@
 package com.example.appointmentmanager.controller;
 
-import com.example.appointmentmanager.dto.DepartementAddRequest;
-import com.example.appointmentmanager.dto.DepartementUpdateRequest;
 import com.example.appointmentmanager.model.Departement;
 import com.example.appointmentmanager.service.DepartementService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class DepartmentController {
         this.departementService = departementService;
     }
 
-    @PostMapping
+    /*@PostMapping
     ResponseEntity<Departement> create(@RequestBody @Valid DepartementAddRequest request) {
         return ResponseEntity.ok().body(departementService.create(request));
     }
@@ -34,7 +33,7 @@ public class DepartmentController {
     @GetMapping("/{id}")
     ResponseEntity<Departement> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(departementService.findById(id));
-    }
+    }*/
 
     @GetMapping("/all")
     ResponseEntity<List<Departement>> get() {

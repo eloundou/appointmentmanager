@@ -35,7 +35,7 @@ public class DefaultResponsableService implements ResponsableService {
         responsable.setTelephone(request.telephone());
         responsable.setNom(request.nom());
         responsable.setPrenom(request.prenom());
-        responsable.setService(departementService.findById(request.serviceId()));
+        responsable.setService(departementService.findByReference(request.refService()));
 
         return departementRepository.save(responsable);
     }
