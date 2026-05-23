@@ -2,11 +2,13 @@ package com.example.appointmentmanager.service.impl;
 
 import com.example.appointmentmanager.dto.ResponsableAddRequest;
 import com.example.appointmentmanager.dto.ResponsableUpdateRequest;
+import com.example.appointmentmanager.exceptions.ApplicationException;
 import com.example.appointmentmanager.exceptions.ResourceNotFoundException;
 import com.example.appointmentmanager.model.Responsable;
 import com.example.appointmentmanager.repository.ResponsableRepository;
 import com.example.appointmentmanager.service.DepartementService;
 import com.example.appointmentmanager.service.ResponsableService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,32 +16,38 @@ import java.util.List;
 @Service
 public class DefaultResponsableService implements ResponsableService {
 
-    private final ResponsableRepository departementRepository;
+    private final ResponsableRepository responsableRepository;
 
     private final DepartementService departementService;
 
-    public DefaultResponsableService(ResponsableRepository departementRepository,
+    public DefaultResponsableService(ResponsableRepository responsableRepository,
                                      DepartementService departementService) {
 
-        this.departementRepository = departementRepository;
+        this.responsableRepository = responsableRepository;
         this.departementService = departementService;
     }
 
+    @Transactional
     @Override
     public Responsable create(ResponsableAddRequest request) {
 
-        var responsable = new Responsable();
+        responsableRepository.findByRef(request.ref()).ifPresent(r -> {
+            throw new ApplicationException("Un responsable avec cette référence a déjà été enregistré");
+        });
 
+        var responsable = new Responsable();
         responsable.setRef(request.ref());
         responsable.setEmail(request.email());
         responsable.setTelephone(request.telephone());
         responsable.setNom(request.nom());
         responsable.setPrenom(request.prenom());
+
         responsable.setService(departementService.findByReference(request.refService()));
 
-        return departementRepository.save(responsable);
+        return responsableRepository.save(responsable);
     }
 
+    @Transactional
     @Override
     public Responsable update(Long id, ResponsableUpdateRequest request) {
 
@@ -50,23 +58,28 @@ public class DefaultResponsableService implements ResponsableService {
         responsable.setNom(request.nom());
         responsable.setPrenom(request.prenom());
 
-        return departementRepository.save(responsable);
+        if (request.email() != null) responsable.setEmail(request.email());
+        if (request.telephone() != null) responsable.setTelephone(request.telephone());
+        if (request.nom() != null && !request.nom().isEmpty()) responsable.setNom(request.nom());
+        if (request.prenom() != null) responsable.setPrenom(request.prenom());
+
+        return responsableRepository.save(responsable);
     }
 
     @Override
     public Responsable findById(Long id) {
-        return departementRepository.findById(id).orElseThrow(
+        return responsableRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Impossible de trouver le responsable avec l'identifiant " + id));
     }
 
     @Override
     public Responsable findByReference(String reference) {
-        return departementRepository.findByRef(reference).orElseThrow(
+        return responsableRepository.findByRef(reference).orElseThrow(
                 () -> new ResourceNotFoundException("Impossible de trouver le responsable avec la référence " + reference));
     }
 
     @Override
     public List<Responsable> findAll() {
-        return departementRepository.findAll();
+        return responsableRepository.findAll();
     }
 }

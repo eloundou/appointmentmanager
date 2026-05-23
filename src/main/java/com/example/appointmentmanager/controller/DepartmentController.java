@@ -19,22 +19,6 @@ public class DepartmentController {
         this.departementService = departementService;
     }
 
-    /*@PostMapping
-    ResponseEntity<Departement> create(@RequestBody @Valid DepartementAddRequest request) {
-        return ResponseEntity.ok().body(departementService.create(request));
-    }
-
-    @PutMapping("/{id}")
-    ResponseEntity<Departement> update(@PathVariable("id") Long id,
-                                       @RequestBody @Valid DepartementUpdateRequest request) {
-        return ResponseEntity.ok().body(departementService.update(id, request));
-    }
-
-    @GetMapping("/{id}")
-    ResponseEntity<Departement> findById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().body(departementService.findById(id));
-    }*/
-
     @GetMapping("/all")
     ResponseEntity<List<Departement>> get() {
         return ResponseEntity.ok().body(departementService.findAll());

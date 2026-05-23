@@ -2,10 +2,12 @@ package com.example.appointmentmanager.service.impl;
 
 import com.example.appointmentmanager.dto.ClientAddRequest;
 import com.example.appointmentmanager.dto.ClientUpdateRequest;
+import com.example.appointmentmanager.exceptions.ApplicationException;
 import com.example.appointmentmanager.exceptions.ResourceNotFoundException;
 import com.example.appointmentmanager.model.Client;
 import com.example.appointmentmanager.repository.ClientRepository;
 import com.example.appointmentmanager.service.ClientService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,13 @@ public class DefaultClientService implements ClientService {
         this.clientRepository = clientRepository;
     }
 
+    @Transactional
     @Override
     public Client create(ClientAddRequest request) {
+
+        clientRepository.findByRef(request.ref()).ifPresent(c -> {
+            throw new ApplicationException("Un client avec cette référence a déjà été enregistré");
+        });
 
         var client = new Client();
         client.setRef(request.ref());
@@ -32,15 +39,16 @@ public class DefaultClientService implements ClientService {
         return clientRepository.save(client);
     }
 
+    @Transactional
     @Override
     public Client update(Long id, ClientUpdateRequest request) {
 
         var client = findById(id);
 
-        client.setEmail(request.email());
-        client.setTelephone(request.telephone());
-        client.setNom(request.nom());
-        client.setPrenom(request.prenom());
+        if (request.email() != null) client.setEmail(request.email());
+        if (request.telephone() != null) client.setTelephone(request.telephone());
+        if (request.nom() != null && !request.nom().isEmpty()) client.setNom(request.nom());
+        if (request.prenom() != null) client.setPrenom(request.prenom());
 
         return clientRepository.save(client);
     }

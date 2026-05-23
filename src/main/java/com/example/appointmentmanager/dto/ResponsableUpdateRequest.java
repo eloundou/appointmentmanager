@@ -1,4 +1,10 @@
 package com.example.appointmentmanager.dto;
 
-public record ResponsableUpdateRequest(String email, Integer telephone, String nom, String prenom) {
+import jakarta.validation.constraints.Email;
+
+public record ResponsableUpdateRequest(
+        @Email String email,
+        Integer telephone,
+        String nom,
+        String prenom) {
 }
