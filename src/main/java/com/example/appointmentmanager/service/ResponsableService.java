@@ -14,6 +14,8 @@ public interface ResponsableService {
 
     Responsable findById(Long id);
 
+    Responsable findByReference(String reference);
+
     List<Responsable> findAll();
 
 }

@@ -21,6 +21,10 @@ public class RendezVous {
     private String motif;
 
     @ManyToOne
+    @JoinColumn(name = "plage_horaire_id")
+    private PlageHoraire plageHoraire;
+
+    @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 

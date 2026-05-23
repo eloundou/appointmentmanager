@@ -46,6 +46,12 @@ public class DefaultDepartementService implements DepartementService {
     }
 
     @Override
+    public Departement findByReference(String reference) {
+        return departementRepository.findByRef(reference).orElseThrow(
+                () -> new ResourceNotFoundException("Impossible de trouver le service avec la référence " + reference));
+    }
+
+    @Override
     public List<Departement> findAll() {
         return departementRepository.findAll();
     }

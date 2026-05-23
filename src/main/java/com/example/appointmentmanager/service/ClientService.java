@@ -14,6 +14,8 @@ public interface ClientService {
 
     Client findById(Long id);
 
+    Client findByReference(String reference);
+
     List<Client> findAll();
 
 }

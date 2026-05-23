@@ -52,6 +52,12 @@ public class DefaultClientService implements ClientService {
     }
 
     @Override
+    public Client findByReference(String reference) {
+        return clientRepository.findByRef(reference).orElseThrow(
+                () -> new ResourceNotFoundException("Impossible de trouver le client avec la référence " + reference));
+    }
+
+    @Override
     public List<Client> findAll() {
         return clientRepository.findAll();
     }

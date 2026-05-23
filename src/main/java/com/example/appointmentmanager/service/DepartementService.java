@@ -14,6 +14,8 @@ public interface DepartementService {
 
     Departement findById(Long id);
 
+    Departement findByReference(String reference);
+
     List<Departement> findAll();
 
 }

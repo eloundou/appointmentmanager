@@ -59,6 +59,12 @@ public class DefaultResponsableService implements ResponsableService {
     }
 
     @Override
+    public Responsable findByReference(String reference) {
+        return departementRepository.findByRef(reference).orElseThrow(
+                () -> new ResourceNotFoundException("Impossible de trouver le responsable avec la référence " + reference));
+    }
+
+    @Override
     public List<Responsable> findAll() {
         return departementRepository.findAll();
     }
