@@ -24,6 +24,6 @@ public record RendezVousCreateRequest(
         LocalDateTime dateRDV,
 
         @NotBlank(message = "Le motif du rendez-vous est obligatoire")
-        String motifRDV
+        String motifRdv
 ) {
 }

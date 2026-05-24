@@ -38,7 +38,8 @@ public class DefaultRendezVousService implements RendezVousService {
     @Override
     public RendezVous create(RendezVousCreateRequest request) {
 
-        if (request.dateRDV().minusHours(48).isBefore(LocalDateTime.now())) {
+        var rdvMinDate = LocalDateTime.now().plusDays(2);
+        if (request.dateRDV().isBefore(rdvMinDate)) {
             throw new ApplicationException("Le rendez-vous doit se prendre au moins 48h en avance");
         }
 
@@ -73,7 +74,7 @@ public class DefaultRendezVousService implements RendezVousService {
         var rendezVous = new RendezVous();
 
         rendezVous.setRef(request.refRDV());
-        rendezVous.setMotif(request.motifRDV());
+        rendezVous.setMotif(request.motifRdv());
         rendezVous.setDateRendezVous(rendezVousDate);
         rendezVous.setPlageHoraire(plageHoraire);
         rendezVous.setResponsable(responsable);

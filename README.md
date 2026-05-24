@@ -64,13 +64,14 @@ Les endpoints disponibles permettent la **création** et la **consultation** des
 
 ## Stack technique
 
-| Technologie | Version |
-|-------------|---------|
-| Java | 21 |
-| Spring Boot | 3.5.14 |
-| PostgreSQL | — |
-| Flyway | — |
-| Lombok | — |
+| Technologie                     | Version |
+|---------------------------------|---------|
+| Java                            | 21 |
+| Spring Boot                     | 3.5.14 |
+| PostgreSQL                      | — |
+| Flyway                          | — |
+| H2 (Pour l'exécution des tests) | — |
+| Lombok                          | — |
 
 ---
 
