@@ -26,7 +26,7 @@ public class DefaultPlageHoraireService implements PlageHoraireService {
     @Override
     public PlageHoraire findWithTimeBetweenDebutAndFin(LocalTime time) {
         return plageHoraireRepository.findWithTimeBetweenDebutAndFin(time).orElseThrow(
-                () -> new ResourceNotFoundException("Aucune plage horaire trouvé pour l'heure " + time.getHour() + "h"));
+                () -> new ResourceNotFoundException("Aucune plage horaire trouvée pour l'heure " + time.getHour() + "h"));
     }
 
 }
