@@ -29,6 +29,10 @@ public class DefaultClientService implements ClientService {
             throw new ApplicationException("Un client avec cette référence a déjà été enregistré");
         });
 
+        clientRepository.findByEmail(request.email()).ifPresent(r -> {
+            throw new ApplicationException("Un client avec cette adresse email a déjà été enregistré");
+        });
+
         var client = new Client();
         client.setRef(request.ref());
         client.setEmail(request.email());
@@ -49,6 +53,13 @@ public class DefaultClientService implements ClientService {
         if (request.telephone() != null) client.setTelephone(request.telephone());
         if (request.nom() != null && !request.nom().isEmpty()) client.setNom(request.nom());
         if (request.prenom() != null) client.setPrenom(request.prenom());
+
+        if (request.email() != null) {
+            clientRepository.findByEmail(request.email()).ifPresent(c -> {
+                if (!c.getId().equals(client.getId()))
+                    throw new ApplicationException("Un client avec cette adresse email a déjà été enregistré");
+            });
+        }
 
         return clientRepository.save(client);
     }

@@ -19,12 +19,17 @@ public class GlobalExceptionHandler {
 
         String userFriendlyMessage = "Une erreur de contrainte de données est survenue.";
 
-        // Match against the specific constraint names defined in Flyway/Entity
-        if (rootMessage.contains("uk_responsables_ref")) {
+        // Match against the specific constraint names defined in Entity
+
+        if (rootMessage.contains("uk_clients_ref")) {
+            userFriendlyMessage = "Un client avec cette référence a déjà été enregistré";
+        } else if (rootMessage.contains("uk_clients_email")) {
+            userFriendlyMessage = "Un client avec cette adresse email a déjà été enregistré";
+        } else if (rootMessage.contains("uk_responsable_ref")) {
             userFriendlyMessage = "Un responsable avec cette référence a déjà été enregistré";
-        } else if (rootMessage.contains("uk_responsables_email")) {
+        } else if (rootMessage.contains("uk_responsable_email")) {
             userFriendlyMessage = "Un responsable avec cette adresse email a déjà été enregistré";
-        } else if (rootMessage.contains("uk_responsables_service_id") || rootMessage.contains("uk_responsables_service")) {
+        } else if (rootMessage.contains("uk_responsable_service_id") || rootMessage.contains("uk_responsable_service")) {
             userFriendlyMessage = "Un responsable avec ce service a déjà été enregistré";
         } else if (rootMessage.contains("uk_appointment_dept_plage_date")) {
             userFriendlyMessage = "Un rendez-vous a déjà été enregistré pour le service spécifié à cette date et à cette plage.";

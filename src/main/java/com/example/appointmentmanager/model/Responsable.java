@@ -7,9 +7,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "responsables",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_responsables_ref", columnNames = {"ref"}),
-                @UniqueConstraint(name = "uk_responsables_email", columnNames = {"email"}),
-                @UniqueConstraint(name = "uk_responsables_service_id", columnNames = {"service_id"})
+                @UniqueConstraint(name = "uk_responsable_ref", columnNames = {"ref"}),
+                @UniqueConstraint(name = "uk_responsable_email", columnNames = {"email"}),
+                @UniqueConstraint(name = "uk_responsable_service_id", columnNames = {"service_id"})
         }
 )
 @Getter
