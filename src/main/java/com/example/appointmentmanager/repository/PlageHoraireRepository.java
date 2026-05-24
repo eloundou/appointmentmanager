@@ -11,7 +11,7 @@ public interface PlageHoraireRepository extends JpaRepository<PlageHoraire, Long
 
     @Query("""
             SELECT p FROM PlageHoraire p
-            WHERE p.debut >= :time AND :time < p.fin
+            WHERE p.debut <= :time AND :time < p.fin
             """)
     Optional<PlageHoraire> findWithTimeBetweenDebutAndFin(LocalTime time);
 
