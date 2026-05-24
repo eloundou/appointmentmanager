@@ -5,10 +5,9 @@ import com.example.appointmentmanager.model.RendezVous;
 import com.example.appointmentmanager.service.RendezVousService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/rendezvous")
@@ -23,6 +22,11 @@ public class RendezVousController {
     @PostMapping
     ResponseEntity<RendezVous> create(@RequestBody @Valid RendezVousCreateRequest request) {
         return ResponseEntity.ok().body(rendezVousService.create(request));
+    }
+
+    @GetMapping("/all")
+    ResponseEntity<List<RendezVous>> get() {
+        return ResponseEntity.ok().body(rendezVousService.findAll());
     }
 
 }

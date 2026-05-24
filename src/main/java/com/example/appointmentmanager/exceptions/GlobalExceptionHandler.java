@@ -17,11 +17,6 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /*@ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<Map<String, String>> handleApplicationException(ApplicationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
-    }*/
-
     @ExceptionHandler(ApplicationException.class)
     public ProblemDetail handleResourceNotFound(ApplicationException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -36,7 +31,7 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -52,7 +47,7 @@ public class GlobalExceptionHandler {
         });
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.UNPROCESSABLE_ENTITY, "La validation de l'entité a échouée");
+                HttpStatus.BAD_REQUEST, "La validation de l'entité a échouée");
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setProperty("errors", errors);
 
