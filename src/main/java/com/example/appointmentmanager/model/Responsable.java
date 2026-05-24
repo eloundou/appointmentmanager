@@ -1,14 +1,17 @@
 package com.example.appointmentmanager.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "responsables")
+@Table(name = "responsables",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_responsables_ref", columnNames = {"ref"}),
+                @UniqueConstraint(name = "uk_responsables_email", columnNames = {"email"}),
+                @UniqueConstraint(name = "uk_responsables_service_id", columnNames = {"service_id"})
+        }
+)
 @Getter
 @Setter
 public class Responsable extends Utilisateur {

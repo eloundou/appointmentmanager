@@ -35,6 +35,16 @@ public class DefaultResponsableService implements ResponsableService {
             throw new ApplicationException("Un responsable avec cette référence a déjà été enregistré");
         });
 
+        responsableRepository.findByRefService(request.refService()).ifPresent(r -> {
+            throw new ApplicationException("Un responsable avec ce service a déjà été enregistré");
+        });
+
+        if (request.email() != null) {
+            responsableRepository.findByEmail(request.email()).ifPresent(r -> {
+                throw new ApplicationException("Un responsable avec cette adresse email a déjà été enregistré");
+            });
+        }
+
         var responsable = new Responsable();
         responsable.setRef(request.ref());
         responsable.setEmail(request.email());
@@ -54,6 +64,14 @@ public class DefaultResponsableService implements ResponsableService {
         var responsable = findById(id);
 
         responsable.setEmail(request.email());
+
+        if (request.email() != null) {
+            responsableRepository.findByEmail(request.email()).ifPresent(r -> {
+                if (!r.getId().equals(responsable.getId()))
+                    throw new ApplicationException("Un responsable avec cette adresse email a déjà été enregistré");
+            });
+        }
+
         responsable.setTelephone(request.telephone());
         responsable.setNom(request.nom());
         responsable.setPrenom(request.prenom());
