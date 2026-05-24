@@ -2,17 +2,65 @@ package com.example.appointmentmanager.exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /*@ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<Map<String, String>> handleApplicationException(ApplicationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+    }*/
+
+    @ExceptionHandler(ApplicationException.class)
+    public ProblemDetail handleResourceNotFound(ApplicationException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
+
+        List<String> errors = new ArrayList<>();
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.add(error.getDefaultMessage());
+        });
+
+        ex.getBindingResult().getGlobalErrors().forEach(error -> {
+            errors.add(error.getDefaultMessage());
+        });
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.UNPROCESSABLE_ENTITY, "La validation de l'entité a échouée");
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("errors", errors);
+
+        return problemDetail;
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+    public ResponseEntity<ProblemDetail> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
 
         // Extract the root cause message containing the SQL constraint name
         String rootMessage = ex.getRootCause() != null ? ex.getRootCause().getMessage() : "";
@@ -20,7 +68,6 @@ public class GlobalExceptionHandler {
         String userFriendlyMessage = "Une erreur de contrainte de données est survenue.";
 
         // Match against the specific constraint names defined in Entity
-
         if (rootMessage.contains("uk_clients_ref")) {
             userFriendlyMessage = "Un client avec cette référence a déjà été enregistré";
         } else if (rootMessage.contains("uk_clients_email")) {
@@ -39,12 +86,10 @@ public class GlobalExceptionHandler {
             userFriendlyMessage = "Un rendez-vous avec cette référence a déjà été enregistré.";
         }
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", userFriendlyMessage));
-    }
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, userFriendlyMessage);
+        problemDetail.setProperty("timestamp", Instant.now());
 
-    @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<Map<String, String>> handleApplicationException(ApplicationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
 }
