@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
             userFriendlyMessage = "Un responsable avec cette adresse email a déjà été enregistré";
         } else if (rootMessage.contains("uk_responsables_service_id") || rootMessage.contains("uk_responsables_service")) {
             userFriendlyMessage = "Un responsable avec ce service a déjà été enregistré";
+        } else if (rootMessage.contains("uk_appointment_dept_plage_date")) {
+            userFriendlyMessage = "Un rendez-vous a déjà été enregistré pour le service spécifié à cette date et à cette plage.";
+        } else if (rootMessage.contains("uk_appointment_clt_plage_date")) {
+            userFriendlyMessage = "Le client spécifié est a déjà un rendez-vous enregistré à cette date à cette plage.";
+        } else if (rootMessage.contains("uk_appointment_ref")) {
+            userFriendlyMessage = "Un rendez-vous avec cette référence a déjà été enregistré.";
         }
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", userFriendlyMessage));

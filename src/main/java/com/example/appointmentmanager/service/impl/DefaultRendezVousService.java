@@ -41,12 +41,17 @@ public class DefaultRendezVousService implements RendezVousService {
             throw new ApplicationException("Le rendez-vous doit se prendre au moins 48h en avance");
         }
 
+        repository.findByRef(request.refRDV()).ifPresent(r -> {
+            throw new ApplicationException("Un rendez-vous avec cette référence a déjà été enregistré");
+        });
+
         var rendezVousTime = request.dateRDV().toLocalTime();
         var rendezVousDate = request.dateRDV().toLocalDate();
 
         var plageHoraire = plageHoraireService.findWithTimeBetweenDebutAndFin(rendezVousTime);
         var responsable = responsableService.findByReference(request.refResponsable());
         var departement = departementService.findByReference(request.refService());
+        var client = clientService.findByReference(request.refClient());
 
         if (!responsable.getService().getId().equals(departement.getId())) {
             throw new ApplicationException(
@@ -54,7 +59,13 @@ public class DefaultRendezVousService implements RendezVousService {
         }
 
         repository.findByServiceAndPlageAndDate(departement, plageHoraire, rendezVousDate).ifPresent((rdv) -> {
-            throw new ApplicationException("Un rendez-vous a déjà été enregistré pour cette date à cette plage");
+            throw new ApplicationException(
+                    "Un rendez-vous a déjà été enregistré pour le service spécifié à cette date et à cette plage.");
+        });
+
+        repository.findByClientAndPlageAndDate(client, plageHoraire, rendezVousDate).ifPresent((rdv) -> {
+            throw new ApplicationException(
+                    "Le client spécifié est a déjà un rendez-vous enregistré à cette date à cette plage.");
         });
 
 
@@ -66,7 +77,7 @@ public class DefaultRendezVousService implements RendezVousService {
         rendezVous.setPlageHoraire(plageHoraire);
         rendezVous.setResponsable(responsable);
         rendezVous.setDepartement(departement);
-        rendezVous.setClient(clientService.findByReference(request.refClient()));
+        rendezVous.setClient(client);
 
         return repository.save(rendezVous);
     }
