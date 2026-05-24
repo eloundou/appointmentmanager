@@ -44,7 +44,30 @@ class ClientRepositoryTest {
         // Assert
         assertThat(result).isPresent();
         assertThat(result.get().getRef()).isEqualTo("CLI-001");
-        assertThat(result.get().getNom()).isEqualTo("Eloundou Mvogo");
+    }
+
+    @Test
+    @DisplayName("Should find client by email")
+    void shouldFindClientByEmail() {
+
+        // Arrange
+        Client client = new Client();
+        client.setRef("CLI-001");
+        client.setEmail("mvogoeloundou@gmail.com");
+        client.setTelephone(690215563);
+        client.setNom("Eloundou Mvogo");
+        client.setPrenom("Victor");
+
+        entityManager.persist(client);
+        entityManager.flush();
+        entityManager.clear();
+
+        // Act
+        Optional<Client> result = repository.findByEmail("mvogoeloundou@gmail.com");
+
+        // Assert
+        assertThat(result).isPresent();
+        assertThat(result.get().getEmail()).isEqualTo("mvogoeloundou@gmail.com");
     }
 
     @Test

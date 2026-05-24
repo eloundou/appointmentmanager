@@ -65,6 +65,64 @@ class ResponsableRepositoryTest {
     }
 
     @Test
+    @DisplayName("Should find responsable by email")
+    void shouldFindResponsableByEmail() {
+
+        // Arrange
+        var email = "fokoudaniel@gmail.com";
+        var departement = departementRepository.findByRef("SERV-DAF").orElse(null);
+
+        var responsable = new Responsable();
+        responsable.setRef("RESP0001");
+        responsable.setNom("FOKOU");
+        responsable.setPrenom("Daniel");
+        responsable.setEmail(email);
+        responsable.setTelephone(690215562);
+        responsable.setService(departement);
+
+        entityManager.persist(responsable);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // Act
+        Optional<Responsable> result = repository.findByEmail(email);
+
+        // Assert
+        assertThat(result).isPresent();
+        assertThat(result.get().getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    @DisplayName("Should find responsable by service")
+    void shouldFindResponsableByService() {
+
+        // Arrange
+        var email = "fokoudaniel@gmail.com";
+        var departement = departementRepository.findByRef("SERV-DAF").orElse(null);
+
+        var responsable = new Responsable();
+        responsable.setRef("RESP0001");
+        responsable.setNom("FOKOU");
+        responsable.setPrenom("Daniel");
+        responsable.setEmail(email);
+        responsable.setTelephone(690215562);
+        responsable.setService(departement);
+
+        entityManager.persist(responsable);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        // Act
+        Optional<Responsable> result = repository.findByRefService(departement.getRef());
+
+        // Assert
+        assertThat(result).isPresent();
+        assertThat(result.get().getService().getId()).isEqualTo(departement.getId());
+    }
+
+    @Test
     @DisplayName("Should return empty when ref does not exist")
     void shouldReturnEmptyWhenRefDoesNotExist() {
 
